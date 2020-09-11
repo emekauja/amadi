@@ -1,0 +1,5 @@
+query NotLogIn {
+  notLogIn {
+     ...RegularUser
+    }
+}
