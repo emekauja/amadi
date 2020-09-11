@@ -11,7 +11,6 @@ import { UserResolver } from './resolvers/user'
 import redis from 'redis'
 import session from 'express-session'
 import connectRedis from 'connect-redis'
-import { createFalse } from 'typescript';
 import cors from 'cors'
  
 
@@ -22,8 +21,8 @@ const main = async () => {
 
   const app = express();
 
-  let RedisStore = connectRedis(session)
-  let redisClient = redis.createClient()
+  let RedisStore = connectRedis(session);
+  let redisClient = redis.createClient();
   app.use(
     cors({
       origin: 'http://localhost:3000',
@@ -55,12 +54,14 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false
     }),
-    context: ({req, res}) => ({ em: orm.em, req, res }),
+    context: ({req, res}) => {
+      return ({ em: orm.em, req, res })
+    },
   });
 
   apolloServer.applyMiddleware({ 
     app, 
-    cors: createFalse
+    cors: false,
   });
 
   app.listen(4000, () => {

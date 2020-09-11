@@ -9,15 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Migration20200908152400 = void 0;
+exports.Migration20200908140703 = void 0;
 const migrations_1 = require("@mikro-orm/migrations");
-class Migration20200908152400 extends migrations_1.Migration {
+class Migration20200908140703 extends migrations_1.Migration {
     up() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.addSql('alter table "post" drop constraint if exists "post_created_at_check";');
+            this.addSql('alter table "post" alter column "created_at" type timestamptz(0) using ("created_at"::timestamptz(0));');
+            this.addSql('alter table "post" drop constraint if exists "post_updated_at_check";');
+            this.addSql('alter table "post" alter column "updated_at" type timestamptz(0) using ("updated_at"::timestamptz(0));');
             this.addSql('create table "user" ("id" serial primary key, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "username" text not null, "password" text not null);');
             this.addSql('alter table "user" add constraint "user_username_unique" unique ("username");');
         });
     }
 }
-exports.Migration20200908152400 = Migration20200908152400;
-//# sourceMappingURL=Migration20200908152400.js.map
+exports.Migration20200908140703 = Migration20200908140703;
+//# sourceMappingURL=Migration20200908140703.js.map
