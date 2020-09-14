@@ -4,7 +4,7 @@ import { usePostsQuery } from "../generated/graphql";
 import { createUrqlClient } from "../utils/createUrqlClient"
 
 const Index = () => {
-  const [{data}, post] = usePostsQuery();
+  const [{ data }] = usePostsQuery();
   return (
     <>
       <NavBar />
