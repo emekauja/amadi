@@ -63,7 +63,6 @@ import NextLink from "next/link";
           )}
         </Formik>
       </Wrapper>
-
       );
 }
 

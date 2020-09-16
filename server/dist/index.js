@@ -13,9 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
-const core_1 = require("@mikro-orm/core");
 const constants_1 = require("./constants");
-const mikro_orm_config_1 = __importDefault(require("./mikro-orm.config"));
 const express_1 = __importDefault(require("express"));
 const apollo_server_express_1 = require("apollo-server-express");
 const type_graphql_1 = require("type-graphql");
@@ -26,9 +24,19 @@ const ioredis_1 = __importDefault(require("ioredis"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_redis_1 = __importDefault(require("connect-redis"));
 const cors_1 = __importDefault(require("cors"));
+const typeorm_1 = require("typeorm");
+const User_1 = require("./entities/User");
+const Post_1 = require("./entities/Post");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
-    const orm = yield core_1.MikroORM.init(mikro_orm_config_1.default);
-    yield orm.getMigrator().up();
+    const conn = yield typeorm_1.createConnection({
+        type: 'postgres',
+        database: 'amadi2',
+        username: 'postgres',
+        password: 'BRAINiac98',
+        logging: true,
+        synchronize: true,
+        entities: [Post_1.Post, User_1.User],
+    });
     const app = express_1.default();
     let RedisStore = connect_redis_1.default(express_session_1.default);
     let redis = new ioredis_1.default();
@@ -58,7 +66,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             validate: false
         }),
         context: ({ req, res }) => {
-            return ({ em: orm.em, req, res, redis });
+            return ({ req, res, redis });
         },
     });
     apolloServer.applyMiddleware({
