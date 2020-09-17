@@ -22,10 +22,6 @@
   },
   "homepage": "https://github.com/emekauja/amadi#readme",
   "dependencies": {
-    "@mikro-orm/cli": "^4.0.0-alpha.0",
-    "@mikro-orm/core": "^4.0.0-alpha.0",
-    "@mikro-orm/migrations": "^4.0.0-alpha.0",
-    "@mikro-orm/postgresql": "^4.0.0-alpha.0",
     "@types/cors": "^2.8.7",
     "@types/ioredis": "^4.17.4",
     "@types/uuid": "^8.3.0",

@@ -4,15 +4,12 @@ import { Wrapper } from '../components/Wrapper'
 import { InputField } from '../components/InputField'
 import { Box, Button, Flex, Link } from '@chakra-ui/core';
 import { useForgotPasswordMutation } from '../generated/graphql';
-import { toErrorMap } from '../utils/toErrorMap';
-import { useRouter } from 'next/router';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../utils/createUrqlClient';
 import NextLink from "next/link";
 
 
  const ForgotPassword: React.FC<{}> = ({}) => {
-    const router = useRouter();
     const [complete, setComplete] = useState(false);
     const [, forgotPassword] = useForgotPasswordMutation()
 
