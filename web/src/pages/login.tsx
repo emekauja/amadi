@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../utils/createUrqlClient';
 import NextLink from "next/link";
+import { type } from 'os';
 
 
 
@@ -24,8 +25,12 @@ import NextLink from "next/link";
             if (response.data?.login.errors) {
               setErrors(toErrorMap(response.data.login.errors));
             } else if (response.data?.login.user) {
-              //worked
-              router.push('/');
+              if (typeof router.query.next === 'string' ) {
+                router.push(router.query.next)
+              } else {
+                //worked
+                router.push('/');
+              }
             }
           }}
         >
