@@ -1,13 +1,21 @@
-import { Resolver, ObjectType, Mutation, Query, Arg, Field, Ctx } from 'type-graphql'
-import { User } from '../entities/User'
-import { MyContext } from '../types';
-import argon2 from 'argon2'
-import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from '../constants';
-import { UsernamePasswordInput } from './UsernamePasswordInput';
-import { validateRegister } from '../utils/validateRegister';
-import { sendEmail } from '../utils/sendEmail';
-import { v4 } from 'uuid';
-import { getConnection } from 'typeorm';
+import {
+  Resolver,
+  Mutation,
+  Arg,
+  Field,
+  Ctx,
+  ObjectType,
+  Query,
+} from "type-graphql";
+import { MyContext } from "../types";
+import { User } from "../entities/User";
+import argon2 from "argon2";
+import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../constants";
+import { UsernamePasswordInput } from "./UsernamePasswordInput";
+import { validateRegister } from "../utils/validateRegister";
+import { sendEmail } from "../utils/sendEmail";
+import { v4 } from "uuid";
+import { getConnection } from "typeorm";
 
 
 @ObjectType()
@@ -150,7 +158,7 @@ export class UserResolver {
             email: options.email,
             password: hashedPassword,
         })
-        .returning('*')
+        .returning("*")
         .execute();
         console.log('result:', result);
         user = result.raw[0];
@@ -193,7 +201,7 @@ export class UserResolver {
         errors: [
           {
             field:'usernameOrEmail',
-            message: `username doesn't exit`,
+            message: `username or email doesn't exit`,
           },
         ],
       };
@@ -233,5 +241,6 @@ export class UserResolver {
     );
   }
 }
+
 
 

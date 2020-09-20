@@ -7,11 +7,16 @@ import {
   Field,
   Ctx,
   UseMiddleware,
+  Int,
+  FieldResolver,
+  Root,
+  ObjectType,
 } from "type-graphql";
 import { Post } from "../entities/Post";
 import { MyContext } from "../types";
 import { isAuth } from "../middleware/isAuth";
 import { getConnection } from "typeorm";
+
 
 @InputType()
 class PostInput {
@@ -21,23 +26,46 @@ class PostInput {
   text: string;
 }
 
-@Resolver()
+@ObjectType()
+class PaginatedPosts {
+  @Field(() => [Post])
+  posts: Post[]
+  @Field()
+  hasMore: boolean
+}
+
+@Resolver(Post)
 export class PostResolver {
-  @Query(() => [Post])
+  @FieldResolver(() => String)
+  textSnippet(@Root() post: Post) {
+    return post.text.slice(0, 50);
+  }
+
+  @Query(() => PaginatedPosts)
   async posts(
-    @Arg('limit') limit: number,
-    @Arg('cursor', () => String, { nullable: true }) cursor: string | null,
-  ): Promise<Post[]> {
+    @Arg('limit', () => Int) limit: number,
+    @Arg('cursor', () => String, { nullable: true }) cursor: string | null
+  ): Promise<PaginatedPosts> {
     const realLimit = Math.max(50, limit);
-    return (
-  getConnection()
-    .getRepository(Post)
-    .createQueryBuilder("p")
-    //.where("user.id = :id", { id: 1 })
-    .orderBy('"createdAt"', "DESC")
-    .take(realLimit)
-    .getMany()
-    );
+    const realLimitPlusOne = realLimit + 1;
+    const qb = getConnection()
+      .getRepository(Post)
+      .createQueryBuilder("p")
+      .orderBy('"createdAt"', "DESC")
+      .take(realLimitPlusOne)
+
+      if (cursor) {
+        qb.where('"createdAt" < :cursor', {
+          cursor: new Date(parseInt(cursor)),
+        });
+      }
+
+      const posts = await qb.getMany()
+
+      return {
+        posts: posts.slice(0, realLimit), 
+        hasMore: posts.length === realLimitPlusOne,
+      };
   }
 
   @Query(() => Post, { nullable: true })
@@ -54,7 +82,7 @@ export class PostResolver {
     return Post.create({
       ...input,
       creatorId: req.session.userId,
-    }).save();
+    }).save(); 
   }
 
   @Mutation(() => Post, { nullable: true })

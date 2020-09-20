@@ -141,7 +141,7 @@ let UserResolver = class UserResolver {
                     email: options.email,
                     password: hashedPassword,
                 })
-                    .returning('*')
+                    .returning("*")
                     .execute();
                 console.log('result:', result);
                 user = result.raw[0];
@@ -171,7 +171,7 @@ let UserResolver = class UserResolver {
                     errors: [
                         {
                             field: 'usernameOrEmail',
-                            message: `username doesn't exit`,
+                            message: `username or email doesn't exit`,
                         },
                     ],
                 };
