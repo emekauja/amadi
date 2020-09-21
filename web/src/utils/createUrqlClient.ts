@@ -132,6 +132,9 @@ export const createUrqlClient = (ssrExchange: any) => ({
       },
       updates: {
         Mutation: {
+          createPost: (_result, args, cache, info) => {
+
+          },
           logout: (_result, args, cache, info) => {
             betterUpdateQuery<LogoutMutation, NotLogInQuery>(
               cache,
