@@ -37,7 +37,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         password: 'BRAINiac98',
         logging: true,
         synchronize: true,
-        migrations: [path_1.default.join(__dirname, "./migrations")],
+        migrations: [path_1.default.join(__dirname, "./migrations/*")],
         entities: [Post_1.Post, User_1.User, Updoot_1.Updoot],
     });
     yield conn.runMigrations();

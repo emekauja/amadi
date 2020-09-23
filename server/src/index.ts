@@ -25,7 +25,7 @@ const main = async () => {
     password: 'BRAINiac98',
     logging: true,
     synchronize: true,
-    migrations: [path.join(__dirname, "./migrations")],
+    migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Post, User, Updoot],
   });
   await conn.runMigrations();

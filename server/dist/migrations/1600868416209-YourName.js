@@ -1,9 +1,19 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
-
-export class FakePosts1600442401158 implements MigrationInterface {
-
-    public async up(queryRunner: QueryRunner): Promise<any> {
-      await queryRunner.query(`
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.YourName1600868416209 = void 0;
+class YourName1600868416209 {
+    up(queryRunner) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield queryRunner.query(`
       insert into post (title, text, "creatorId", "createdAt") values ('Sinbad: The Fifth Voyage', 'Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum.', 1, '2019-12-06T09:20:02Z');
       insert into post (title, text, "creatorId", "createdAt") values ('B. Monkey', 'Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.', 1, '2020-08-06T01:46:37Z');
       insert into post (title, text, "creatorId", "createdAt") values ('Time in the Minors', 'Sed ante. Vivamus tortor. Duis mattis egestas metus.', 1, '2020-05-28T03:33:18Z');
@@ -203,9 +213,12 @@ export class FakePosts1600442401158 implements MigrationInterface {
       insert into post (title, text, "creatorId", "createdAt") values ('Zed & Two Noughts, A', 'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.
       Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 1, '2020-06-21T10:42:55Z');
       `);
+        });
     }
-
-    public async down(_: QueryRunner): Promise<any> {
+    down(_) {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
     }
-
 }
+exports.YourName1600868416209 = YourName1600868416209;
+//# sourceMappingURL=1600868416209-YourName.js.map
