@@ -14,6 +14,8 @@ import { createConnection } from 'typeorm'
 import { User } from './entities/User';
 import { Post } from './entities/Post';
 import { Updoot } from './entities/Updoot';
+import { createUserLoader } from "./utils/createUserLoader";
+import { createUpdootLoader } from "./utils/createUpdootLoader";
 import path from 'path'
 
 
@@ -29,11 +31,12 @@ const main = async () => {
     entities: [Post, User, Updoot],
   });
   await conn.runMigrations();
- //rerun
+
   const app = express();
 
-  let RedisStore = connectRedis(session);
-  let redis = new Redis();
+  const RedisStore = connectRedis(session);
+  app.set("trust proxy", 1)
+  const redis = new Redis();
   app.use(
     cors({
       origin: 'http://localhost:3000',
@@ -66,7 +69,10 @@ const main = async () => {
       validate: false
     }),
     context: ({req, res}) => {
-      return ({ req, res, redis })
+      return ({ req, res, redis, 
+        userLoader: createUserLoader(),
+        updootLoader: createUpdootLoader(),
+       });
     },
   });
 

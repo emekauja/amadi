@@ -11,8 +11,6 @@ import {
 import { Post } from "./Post";
 import { Updoot } from "./Updoot";
 
-
-
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
@@ -23,14 +21,14 @@ export class User extends BaseEntity {
   @Field()
   @Column({ unique: true })
   username!: string;
-  
+
   @Field()
   @Column({ unique: true })
   email!: string;
 
   @Column()
   password!: string;
-  
+
   @OneToMany(() => Post, (post) => post.creator)
   posts: Post[];
 
@@ -39,7 +37,7 @@ export class User extends BaseEntity {
 
   @Field(() => String)
   @CreateDateColumn()
-  createdAt:  Date;
+  createdAt: Date;
 
   @Field(() => String)
   @UpdateDateColumn()

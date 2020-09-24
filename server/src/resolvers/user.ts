@@ -4,10 +4,10 @@ import {
   Arg,
   Field,
   Ctx,
-  FieldResolver,
-  Root,
   ObjectType,
   Query,
+  FieldResolver,
+  Root,
 } from "type-graphql";
 import { MyContext } from "../types";
 import { User } from "../entities/User";
@@ -251,6 +251,4 @@ export class UserResolver {
     );
   }
 }
-
-
 

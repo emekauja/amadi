@@ -28,6 +28,8 @@ const typeorm_1 = require("typeorm");
 const User_1 = require("./entities/User");
 const Post_1 = require("./entities/Post");
 const Updoot_1 = require("./entities/Updoot");
+const createUserLoader_1 = require("./utils/createUserLoader");
+const createUpdootLoader_1 = require("./utils/createUpdootLoader");
 const path_1 = __importDefault(require("path"));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const conn = yield typeorm_1.createConnection({
@@ -42,8 +44,9 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     });
     yield conn.runMigrations();
     const app = express_1.default();
-    let RedisStore = connect_redis_1.default(express_session_1.default);
-    let redis = new ioredis_1.default();
+    const RedisStore = connect_redis_1.default(express_session_1.default);
+    app.set("trust proxy", 1);
+    const redis = new ioredis_1.default();
     app.use(cors_1.default({
         origin: 'http://localhost:3000',
         credentials: true
@@ -70,7 +73,10 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             validate: false
         }),
         context: ({ req, res }) => {
-            return ({ req, res, redis });
+            return ({ req, res, redis,
+                userLoader: createUserLoader_1.createUserLoader(),
+                updootLoader: createUpdootLoader_1.createUpdootLoader(),
+            });
         },
     });
     apolloServer.applyMiddleware({
