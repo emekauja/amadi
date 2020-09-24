@@ -124,7 +124,7 @@ let UserResolver = class UserResolver {
         });
     }
     notLogIn({ req }) {
-        if (!req.session.userid) {
+        if (!req.session.userId) {
             return null;
         }
         return User_1.User.findOne(req.session.userId);
@@ -149,7 +149,6 @@ let UserResolver = class UserResolver {
                 })
                     .returning("*")
                     .execute();
-                console.log('result:', result);
                 user = result.raw[0];
             }
             catch (err) {
@@ -169,15 +168,15 @@ let UserResolver = class UserResolver {
     }
     login(usernameOrEmail, password, { req }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield User_1.User.findOne(usernameOrEmail.includes('@')
+            const user = yield User_1.User.findOne(usernameOrEmail.includes("@")
                 ? { where: { email: usernameOrEmail } }
                 : { where: { username: usernameOrEmail } });
             if (!user) {
                 return {
                     errors: [
                         {
-                            field: 'usernameOrEmail',
-                            message: `username or email doesn't exit`,
+                            field: "usernameOrEmail",
+                            message: "username or email doesn't exist",
                         },
                     ],
                 };
@@ -187,15 +186,15 @@ let UserResolver = class UserResolver {
                 return {
                     errors: [
                         {
-                            field: 'password',
-                            message: 'incorrect password',
+                            field: "password",
+                            message: "incorrect password",
                         },
                     ],
                 };
             }
             req.session.userId = user.id;
             return {
-                user
+                user,
             };
         });
     }
@@ -252,8 +251,8 @@ __decorate([
 ], UserResolver.prototype, "register", null);
 __decorate([
     type_graphql_1.Mutation(() => UserResponse),
-    __param(0, type_graphql_1.Arg('usernameOrEmail')),
-    __param(1, type_graphql_1.Arg('password')),
+    __param(0, type_graphql_1.Arg("usernameOrEmail")),
+    __param(1, type_graphql_1.Arg("password")),
     __param(2, type_graphql_1.Ctx()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String, Object]),

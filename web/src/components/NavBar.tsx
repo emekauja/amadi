@@ -42,7 +42,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
             create post
           </Button>
         </NextLink>
-        <Box mr={2}>{data.notLogIn.username}</Box>
+        <Box alignSelf="center" mr={2}>{data.notLogIn.username}</Box>
         <Button 
           onClick={() => logout()}
           isLoading={logoutfetching}

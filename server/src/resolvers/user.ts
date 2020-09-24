@@ -31,13 +31,12 @@ class FieldError {
 
 @ObjectType()
 class UserResponse {
-  @Field(() => [FieldError], {nullable: true})
+  @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
 
-  @Field(() => User, {nullable: true})
+  @Field(() => User, { nullable: true })
   user?: User;
 }
-
 
 @Resolver(User)
 export class UserResolver {
@@ -138,13 +137,14 @@ export class UserResolver {
     return true;
   }
 
-  @Query(() => User, {nullable: true})
-   notLogIn(@Ctx() { req }: MyContext) {
-    // user not logged in
-    if (!req.session.userid) {
+  @Query(() => User, { nullable: true })
+  notLogIn(@Ctx() { req }: MyContext) {
+    // you are not logged in
+    if (!req.session.userId) {
       return null;
     }
-   return User.findOne(req.session.userId);
+
+    return User.findOne(req.session.userId);
   }
 
   @Mutation(() => UserResponse)
@@ -172,7 +172,6 @@ export class UserResolver {
         })
         .returning("*")
         .execute();
-        console.log('result:', result);
         user = result.raw[0];
       } catch (err) {
         //duplicate username error
@@ -198,33 +197,32 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async login(
-    @Arg('usernameOrEmail') usernameOrEmail: string, 
-    @Arg('password') password: string,
-    //@Arg('options') options: UsernamePasswordInput, 
-    @Ctx() { req }: MyContext 
+    @Arg("usernameOrEmail") usernameOrEmail: string,
+    @Arg("password") password: string,
+    @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
     const user = await User.findOne(
-      usernameOrEmail.includes('@') 
-       ? { where: { email: usernameOrEmail } } 
-       : { where: { username: usernameOrEmail } }
-     );
+      usernameOrEmail.includes("@")
+        ? { where: { email: usernameOrEmail } }
+        : { where: { username: usernameOrEmail } }
+    );
     if (!user) {
       return {
         errors: [
           {
-            field:'usernameOrEmail',
-            message: `username or email doesn't exit`,
+            field: "usernameOrEmail",
+            message: "username or email doesn't exist",
           },
         ],
       };
     }
-    const valid = await argon2.verify(user.password, password)
+    const valid = await argon2.verify(user.password, password);
     if (!valid) {
       return {
         errors: [
           {
-            field: 'password',
-            message: 'incorrect password',
+            field: "password",
+            message: "incorrect password",
           },
         ],
       };
@@ -232,8 +230,8 @@ export class UserResolver {
 
     req.session.userId = user.id;
 
-    return { 
-      user 
+    return {
+      user,
     };
   }
 

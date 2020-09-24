@@ -17,6 +17,8 @@ import { MyContext } from "../types";
 import { isAuth } from "../middleware/isAuth";
 import { getConnection } from "typeorm";
 import { Updoot } from "../entities/Updoot";
+//import { User } from "../entities/User";
+
 
 
 @InputType()
@@ -41,6 +43,28 @@ export class PostResolver {
   textSnippet(@Root() post: Post) {
     return post.text.slice(0, 50);
   }
+
+/*   @FieldResolver(() => User)
+  creator(@Root() post: Post, @Ctx() { userLoader }: MyContext) {
+    return userLoader.load(post.creatorId);
+  }
+
+  @FieldResolver(() => Int, { nullable: true })
+  async voteStatus(
+    @Root() post: Post,
+    @Ctx() { updootLoader, req }: MyContext
+  ) {
+    if (!req.session.userId) {
+      return null;
+    }
+
+    const updoot = await updootLoader.load({
+      postId: post.id,
+      userId: req.session.userId,
+    });
+
+    return updoot ? updoot.value : null;
+  } */
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
@@ -180,26 +204,36 @@ export class PostResolver {
       ...input,
       creatorId: req.session.userId,
     }).save();
-  }
+  }//create post
 
   @Mutation(() => Post, { nullable: true })
+  @UseMiddleware(isAuth)
   async updatePost(
-    @Arg("id") id: number,
-    @Arg("title", () => String, { nullable: true }) title: string
+    @Arg("id", () => Int) id: number,
+    @Arg("title") title: string,
+    @Arg("text") text: string,
+    @Ctx() { req }: MyContext
   ): Promise<Post | null> {
-    const post = await Post.findOne(id);
-    if (!post) {
-      return null;
-    }
-    if (typeof title !== "undefined") {
-      await Post.update({ id }, { title });
-    }
-    return post;
+    const result = await getConnection()
+    .createQueryBuilder()
+    .update(Post)
+    .set({ title, text })
+    .where('id = :id and "creatorId" = :creatorId',
+     { id,
+      creatorId: req.session.userId
+    })
+    .returning("*")
+    .execute();
+
+    return result.raw[0];
   }
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
-  async deletePost(@Arg("id") id: number, @Ctx() { req }: MyContext): Promise<boolean> {
+  async deletePost(
+    @Arg("id", () => Int) id: number, 
+    @Ctx() { req }: MyContext): Promise<boolean> {
+
     await Post.delete({ id, creatorId: req.session.userId });
     return true;
   }
