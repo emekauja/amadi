@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import 'dotenv-safe/config';
 import { COOKIE_NAME, __prod__ } from './constants';
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
@@ -22,9 +23,7 @@ import path from 'path'
 const main = async () => {
   const conn = await createConnection({
     type: 'postgres',
-    database: 'amadi2',
-    username: 'postgres',
-    password: 'BRAINiac98',
+    url: process.env.DATABASE_URL,
     logging: true,
     synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
@@ -36,7 +35,7 @@ const main = async () => {
 
   const RedisStore = connectRedis(session);
   app.set("trust proxy", 1)
-  const redis = new Redis();
+  const redis = new Redis(process.env.REDIS_URL);
   app.use(
     cors({
       origin: 'http://localhost:3000',
