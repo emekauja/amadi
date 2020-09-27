@@ -1,0 +1,11 @@
+{
+   "type": "postgres",
+   "host": "localhost",
+   "port": 5432,
+   "username": "postgres",
+   "password": "BRAINiac98",
+   "database": "amadi",
+   "synchronize": false,
+   "entities": ["dist/entities/*.js"],
+   "migrations": ["dist/migrations/*.js"]
+}

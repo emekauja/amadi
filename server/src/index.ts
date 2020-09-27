@@ -25,7 +25,7 @@ const main = async () => {
     type: 'postgres',
     url: process.env.DATABASE_URL,
     logging: true,
-    synchronize: true,
+    synchronize: false,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Post, User, Updoot],
   });
@@ -34,11 +34,11 @@ const main = async () => {
   const app = express();
 
   const RedisStore = connectRedis(session);
-  app.set("trust proxy", 1)
+  app.set("trust proxy", 1);
   const redis = new Redis(process.env.REDIS_URL);
   app.use(
     cors({
-      origin: 'http://localhost:3000',
+      origin: process.env.CORS_ORIGIN,
       credentials: true
     })
   )
@@ -54,10 +54,11 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, //10 years
         httpOnly: true,
         sameSite: 'lax', //csrf
-        secure: __prod__ //cokie only works in https
+        secure: __prod__, //cokie only works in https
+        //domain: __prod__ ? '.amadi.vercel.com' : undefined
       },
       saveUninitialized: false,
-      secret: 'cookie7163he76uyd637',
+      secret: process.env.SESSION_SECRET,
       resave: false,
     })
   )
@@ -78,9 +79,10 @@ const main = async () => {
   apolloServer.applyMiddleware({ 
     app, 
     cors: false,
+    path: '/'
   });
 
-  app.listen(4000, () => {
+  app.listen(parseInt(process.env.PORT), () => {
     console.log('server started on localhost: 4000')
   })
 };
