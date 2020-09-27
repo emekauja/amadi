@@ -2,10 +2,10 @@
   "name": "amadi",
   "version": "1.0.0",
   "description": "Amadi is a community app built with Typescript, React, GraphQL and Node.js",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "dev": "nodemon dist/index.js",
-    "start": "node dist/index.js",
+/*     "dev": "nodemon dist/index.js",
+    "start": "node dist/index.js", */
     "build": "tsc",
     "deploy": "npm run build && vercel --prod",
     "start2": "ts-node src/index.ts",
@@ -66,7 +66,7 @@
     "useTsNode": true,
     "configPaths": [
       "./src/mikro-orm.config.ts",
-      "./dist/mikro-orm.config.js"
-    ]
+/*       "./dist/mikro-orm.config.js"
+ */    ]
   }
 }
