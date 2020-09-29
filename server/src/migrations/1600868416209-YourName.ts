@@ -3,7 +3,7 @@ import {MigrationInterface, QueryRunner} from "typeorm";
 export class YourName1600868416209 implements MigrationInterface {
 
     public async up(_: QueryRunner): Promise<any> {
-       /*await queryRunner.query(`
+      /*  await queryRunner.query(`
       insert into post (title, text, "creatorId", "createdAt") values ('Sinbad: The Fifth Voyage', 'Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum.', 1, '2019-12-06T09:20:02Z');
       insert into post (title, text, "creatorId", "createdAt") values ('B. Monkey', 'Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.', 1, '2020-08-06T01:46:37Z');
       insert into post (title, text, "creatorId", "createdAt") values ('Time in the Minors', 'Sed ante. Vivamus tortor. Duis mattis egestas metus.', 1, '2020-05-28T03:33:18Z');
@@ -202,7 +202,7 @@ export class YourName1600868416209 implements MigrationInterface {
       insert into post (title, text, "creatorId", "createdAt") values ('Now and Then', 'Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.', 1, '2020-02-07T15:05:27Z');
       insert into post (title, text, "creatorId", "createdAt") values ('Zed & Two Noughts, A', 'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.
       Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 1, '2020-06-21T10:42:55Z'); 
-      `);*/
+      `); */
     }
 
     public async down(_: QueryRunner): Promise<any> {
